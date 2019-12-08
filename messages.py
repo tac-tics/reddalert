@@ -16,7 +16,7 @@ from twilio.base.exceptions import TwilioRestException
 config = configparser.ConfigParser()
 
 REDDIT_USER = os.environ['REDDIT_USER']
-REDDIT_INI = os.environ.get('REDDIT_INIT', '/data/credentials/reddit/reddit')
+REDDIT_INI = os.environ.get('REDDIT_INIT', '/data/credentials/reddit/' + REDDIT_USER)
 config.read(REDDIT_INI)
 config.read('/data/credentials/twilio/twilio')
 
