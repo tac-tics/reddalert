@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reddalert-{{ .Values.reddit.username }}
+spec:
+  selector:
+    matchLabels:
+      app: reddalert-{{ .Values.reddit.username }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reddalert-{{ .Values.reddit.username }}
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: reddalert-{{ .Values.reddit.username }}
+        image: tactics40/reddalert
+        ports:
+        - containerPort: 5000
+        env:
+        - name: REDDIT_USER
+          value: {{ .Values.reddit.username }}
+        volumeMounts:
+        - name: credentials-twilio
+          mountPath: /data/credentials/twilio/
+        - name: credentials-reddit
+          mountPath: /data/credentials/reddit/
+      volumes:
+      - name: credentials-twilio
+        secret:
+          secretName: twilio
+      - name: credentials-reddit
+        secret:
+          secretName: reddit
